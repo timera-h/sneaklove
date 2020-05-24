@@ -1,10 +1,10 @@
 module.exports = (req, res, next) => {
   req.session.currentUser = {
-    _id: "5ec3aaa1dda5ba14c2c72fe8",
-    username: "demo-admin",
-    avatar: "https://cdn.onlinewebfonts.com/img_258083.png",
+    _id: "5ec941e1cc1e523bd4e971ce",
+    name: "toto",
+    lastname:"dupont",
     role: "admin",
-    email: "admin@shop-sp4.com",
+    email: "dupont@mail.com",
   };
   next();
 };

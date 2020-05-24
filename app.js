@@ -12,22 +12,23 @@ const hbs = require("hbs");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
-const dev_mode = false;
+const dev_mode = true;
 const logger = require("morgan");
 
 // config logger (pour debug)
 app.use(logger("dev"));
 
 // initial config
-app.set("view engine", "hbs");
-app.set("views", __dirname + "/views");
 // app.set("views", __dirname + "/view/error");
-app.use(express.static("public"));
-hbs.registerPartials(__dirname + "/views/partial");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.set("views", __dirname + "/views");
+app.use(express.static("public"));
+
+app.set("view engine", "hbs");
+hbs.registerPartials(__dirname + "/views/partial");
 // SESSION SETUP
 app.use(
   session({
@@ -61,6 +62,8 @@ app.use(require("./middlewares/exposeFlashMessage")); // affiche les messages da
 app.use("/", require("./routes/index"));
 app.use(require("./routes/dashboard_sneaker"));
 app.use(require("./routes/auth"));
+// app.use(require("./routes/users"));
+
 
 
 // catch 404 and forward to error handler

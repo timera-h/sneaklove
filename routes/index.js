@@ -11,15 +11,15 @@ const protectPrivateRoute = require("./../middlewares/protectPrivateRoute");
 // );
 
 router.get("/", (req, res) => {
-  res.render("index");
+  res.render("home");
 });
 
 router.get("/sneakers/:cat", (req, res) => {
-  res.render("bar");
+  res.render("");
 });
 
 router.get("/one-product/:id", (req, res) => {
-  res.render("baz");
+  res.render("one_product");
 });
 
 router.get("/signup", (req, res) => {
