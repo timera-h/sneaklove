@@ -2,22 +2,22 @@ const express = require("express"); // import express in this module
 const router = new express.Router(); // create an app sub-module (router)
 const sneakerModel = require("./../models/Sneaker");
 const uploader = require("./../config/cloudinary");
-const category = sneakerModel.category; console.log(category);
+const protectPrivateRoute = require("./../middlewares/protectPrivateRoute");
 
-
-router.get("/products_add", (req, res, next) => {
+router.get("/products_add", protectPrivateRoute, (req, res, next) => {
     sneakerModel
     .find()
     .then((dbRes) => {
         res.render("products_add", {
-            products: dbRes,
+            products: dbRes
         })
         
     })
     .catch(next)
 })
 
-router.get("/dashboard/products_manage", (req, res, next) => {
+router.get("/dashboard/products_manage", protectPrivateRoute, (req, res, next) => {
+    // const category = sneakerModel.; console.log(category);
     sneakerModel
     .find()
     .then((dbRes) => {
@@ -29,7 +29,7 @@ router.get("/dashboard/products_manage", (req, res, next) => {
     .catch(next);
 })
 
-router.get("/dashboard/product_edit", (req, res, next) => {
+router.get("/dashboard/product_edit", protectPrivateRoute, (req, res, next) => {
     sneakerModel
     .then((dbRes) => {
         res.render("dashboard/product_edit")
@@ -43,6 +43,7 @@ router.post("/products_add", uploader.single("image"), (req, res, next) => {
     sneakerModel
     .create(newProduct)
     .then((dbRes) => {
+
         res.redirect("dashboard/products_manage");
     })
     .catch(next);

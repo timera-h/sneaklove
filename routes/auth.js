@@ -16,9 +16,6 @@ router.get("/signup", (req, res) => {
     req.session.destroy(() => res.redirect("/signin"));
 });
 
-//   router.post("/signup", (req, res) =>{
-//     res.redirect("signin")
-// });
   router.post("/signin", (req, res, next)=>  {
     const userInfos = req.body; 
     console.log("<<<<<<<<<<<<< ", userInfos);
@@ -49,7 +46,7 @@ router.get("/signup", (req, res) => {
      
       const { _doc: clone } = { ...user };
       delete clone.password;
-      req.session.currentUser = clone; console.log("c'esr ici >>>>>>>>>>>>>>>", currentUser);
+      req.session.currentUser = clone; console.log("c'esr ici >>>>>>>>>>>>>>>", currentUser.id);
       res.redirect("/signup");
     })
     .catch(next);
@@ -72,13 +69,11 @@ router.post("/signup", (req, res, next) => {
       })
       .catch(next);
 
-    // si le programme est lu jusqu'ici, on converti le mot de passe en chaîne cryptée
     const salt = bcrypt.genSaltSync(10);
     const hashed = bcrypt.hashSync(user.password, salt);
-    // console.log("password crypté >>>", hashed);
-    user.password = hashed; // on remplace le mot de passe "en clair" par sa version cryptée
+  
+    user.password = hashed; 
 
-    // finalement on insère le nouvel utilisateur en base de données
     userModel
       .create(user)
       .then((dbRes) => {
