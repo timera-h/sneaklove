@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 const bcrypt = require("bcrypt");
 const userModel = require("./../models/User");
+const currentUser = require("./../middlewares/devMode");
 
 router.get("/signup", (req, res) => {
     res.render("signup", { title: "Inscription"  });
@@ -11,7 +12,7 @@ router.get("/signup", (req, res) => {
     res.render("signin", { title: "Connexion"});
   });
 
-  router.get("/signout", (req, res) =>{
+  router.get("/logout", (req, res) =>{
     req.session.destroy(() => res.redirect("/signin"));
 });
 
@@ -49,7 +50,7 @@ router.get("/signup", (req, res) => {
       const { _doc: clone } = { ...user };
       delete clone.password;
       req.session.currentUser = clone; console.log("c'esr ici >>>>>>>>>>>>>>>", currentUser);
-      res.redirect("/home");
+      res.redirect("/signup");
     })
     .catch(next);
 });

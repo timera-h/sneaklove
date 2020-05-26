@@ -11,7 +11,7 @@ const protectPrivateRoute = require("./../middlewares/protectPrivateRoute");
 // );
 
 router.get("/", (req, res) => {
-  res.render("home");
+  res.render("index");
 });
 
 router.get("/sneakers/:cat", (req, res) => {

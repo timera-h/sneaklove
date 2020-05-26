@@ -6,8 +6,8 @@ const uploader = require("./../config/cloudinary");
 const protectRoute = require("./../middlewares/protectPrivateRoute");
 const protectAdminRoute = require("./../middlewares/protectAdminRoute");
 
-router.get("/profile", protectRoute, (req, res) => {
-  res.render("profile");
+router.get("/", protectRoute, (req, res) => {
+  res.render("index");
 });
 
 router.get("/dashboard/manage-users", protectAdminRoute, (req, res, next) => {
@@ -41,7 +41,7 @@ router.get("/dashboard/users/edit/:id", protectAdminRoute, (req, res, next) => {
 });
 
 router.post(
-  "/profile/edit/infos/:id",
+  "/signin/edit/infos/:id",
   uploader.single("avatar"),
   (req, res, next) => {
     const updatedUserInfos = req.body; // on stocke les infos postées dans cette constante
@@ -59,13 +59,13 @@ router.post(
       .findByIdAndUpdate(req.params.id, updatedUserInfos, { new: true }) // attention à l'option new: true
       .then((updatedUser) => {
         req.session.currentUser = updatedUser;
-        res.redirect("/home");
+        res.redirect("/index");
       })
       .catch(next);
   }
 );
 
-router.post("/profile/edit/password/:id", (req, res, next) => {
+router.post("/signin/edit/password/:id", (req, res, next) => {
   const updatedUserInfos = req.body; // on stocke les infos postées dans cette constante
   if (
     // on vérifie la présence de tous les champs requis
@@ -93,7 +93,7 @@ router.post("/profile/edit/password/:id", (req, res, next) => {
 
         user.password = hashed; // on remplace le mot de passe "en clair" par le hash
         user.save(); // et enfin on update le document user récupéré de la bdd avec les nouvelles infos
-        res.redirect("/home");
+        res.redirect("/index");
       }
     })
     .catch(next);

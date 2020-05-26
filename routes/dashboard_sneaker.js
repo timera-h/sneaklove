@@ -2,13 +2,15 @@ const express = require("express"); // import express in this module
 const router = new express.Router(); // create an app sub-module (router)
 const sneakerModel = require("./../models/Sneaker");
 const uploader = require("./../config/cloudinary");
+const category = sneakerModel.category; console.log(category);
+
 
 router.get("/products_add", (req, res, next) => {
     sneakerModel
     .find()
     .then((dbRes) => {
         res.render("products_add", {
-            products_add: dbRes,
+            products: dbRes,
         })
         
     })
@@ -41,7 +43,7 @@ router.post("/products_add", uploader.single("image"), (req, res, next) => {
     sneakerModel
     .create(newProduct)
     .then((dbRes) => {
-        res.redirect("/dashboard/products_manage");
+        res.redirect("dashboard/products_manage");
     })
     .catch(next);
 });
@@ -57,5 +59,6 @@ router.post("/products/edit/:id", uploader.single("image"), (req, res, next) => 
     })
     .catch(next)
 });
+
 
 module.exports = router;
